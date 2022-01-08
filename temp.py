@@ -30,7 +30,7 @@ f.close()
 
 time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-f = open('/home/pi/hb-tools/weatherhistory.txt', 'a')
+f = open('/home/pi/hb-tools/weatherhistory.csv', 'a')
 f.write(time + ";" + tem+ ";" + hum + "\n")
 f.close()
 
