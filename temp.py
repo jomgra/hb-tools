@@ -13,7 +13,7 @@ soup = BeautifulSoup(resp.text, "html5lib")
 r = soup(text="Temperature")
 tem = r[0].next.next.text
 
-f = open('./temp.txt', 'w')
+f = open('/home/pi/hb-tools/temp.txt', 'w')
 f.write(tem)
 f.close()
 
@@ -22,7 +22,7 @@ f.close()
 r = soup(text="Air humidity")
 hum = r[0].next.next.text
 
-f = open('./hum.txt', 'w')
+f = open('/home/pi/hb-tools/hum.txt', 'w')
 f.write(hum)
 f.close()
 
@@ -30,7 +30,7 @@ f.close()
 
 time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-f = open('./weatherhistory.txt', 'a')
+f = open('/home/pi/hb-tools/weatherhistory.txt', 'a')
 f.write(time + ";" + tem+ ";" + hum + "\n")
 f.close()
 
