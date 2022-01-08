@@ -1,30 +1,37 @@
 #!/usr/bin/env python
 
-import urllib2
+from bs4 import BeautifulSoup
+import requests as req
 import sys
+import datetime
 
-url = "http://celsius.met.uu.se/data/obs_uppsala.htm"
-needle1 = "<td>Temperature</td>"
-needle2 = "<td>Air humidity</td>"
+resp = req.get("http://celsius.met.uu.se/data/obs_uppsala.htm")
+soup = BeautifulSoup(resp.text, "html5lib")
 
-response = urllib2.urlopen(url)
-#print response.info()
-html = response.read()
-i = html.find(needle1)
-s = html[i+42:i+55]
-temperature = s[0:s.find("</")]
-i = html.find(needle2)
-s = html[i+43:i+55]
-humidity = s[0:s.find("</")]
+# Temperature
 
-response.close() 
+r = soup(text="Temperature")
+tem = r[0].next.next.text
 
-f = open('/home/pi/hb-tools/temp.txt', 'w')
-f.write(temperature)
+f = open('./temp.txt', 'w')
+f.write(tem)
 f.close()
 
-f = open('/home/pi/hb-tools/hum.txt', 'w')
-f.write(humidity)
+# Humidity
+
+r = soup(text="Air humidity")
+hum = r[0].next.next.text
+
+f = open('./hum.txt', 'w')
+f.write(hum)
+f.close()
+
+# Time
+
+time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+f = open('./weatherhistory.txt', 'a')
+f.write(time + ";" + tem+ ";" + hum + "\n")
 f.close()
 
 sys.exit()
